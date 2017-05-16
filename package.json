@@ -1,0 +1,14 @@
+{
+  "name": "TriangleGenerator",
+  "version": "1.0.0",
+  "description": "Generates any triangle configuration",
+  "main": "main.js",
+  "keywords": [
+    "Triangle",
+    "Triangles",
+    "Generator",
+    "Lattice"
+  ],
+  "author": "Madison Hanberry",
+  "license": "LGPL-3.0"
+}
