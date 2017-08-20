@@ -7,22 +7,22 @@ function refresh(){
     var base = parseInt(document.getElementsByName("base")[0].value);
     var armWidth = parseInt(document.getElementsByName("armWidth")[0].value);
     var vertexExtrusion = parseInt(document.getElementsByName("vertexExtrusion")[0].value);
-    var vertexRadius = parseInt(document.getElementsByName("vertexRadius")[0].value);
+    var vertexDiameter = parseInt(document.getElementsByName("vertexDiameter")[0].value);
     var sideRadius = parseInt(document.getElementsByName("sideRadius")[0].value);
-    triangle(base, armWidth, vertexExtrusion, vertexRadius, sideRadius);
+    triangle(base, armWidth, vertexExtrusion, vertexDiameter, sideRadius);
 }
 
 // Draws a triangle
-function triangle(base, armWidth, vertexExtrusion, vertexRadius, sideRadius){
+function triangle(base, armWidth, vertexExtrusion, vertexDiameter, sideRadius){
     // Common variables
     var degree = Math.PI / 3;
     extrusionx = Math.sin(degree) * vertexExtrusion;
     extrusiony = Math.cos(degree) * vertexExtrusion;
-    var arcBase = base - 2 * (vertexRadius + extrusionx);
+    var arcBase = base - 2 * (vertexDiameter + extrusionx);
     // Center the image
     var startx = (window.innerWidth / 2) - (document.getElementById('1').getBoundingClientRect().width / 2);
     console.log(document.getElementById('1').getBoundingClientRect().width);
-    var starty = (vertexExtrusion + extrusiony + vertexRadius + (Math.sin(degree) * arcBase) + 100);
+    var starty = (vertexExtrusion + extrusiony + vertexDiameter + (Math.sin(degree) * arcBase) + 100);
     var deltax, deltay;
     var d = "";
     clearView();
@@ -30,7 +30,7 @@ function triangle(base, armWidth, vertexExtrusion, vertexRadius, sideRadius){
     // Bottom-left vertex
     deltax = Math.cos(degree) * (2 * armWidth);
     deltay = Math.sin(degree) * (2 * armWidth);
-    d += "M " + startx + " " + starty + " " + " a " + vertexRadius + " " + vertexRadius + " 0 0 0 " + deltax + " " + deltay;
+    d += "M " + startx + " " + starty + " " + " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
     
     // Bottom-left extrusion
     deltax = extrusionx;
@@ -48,7 +48,7 @@ function triangle(base, armWidth, vertexExtrusion, vertexRadius, sideRadius){
     // Bottom-right vertex
     deltax = Math.cos(degree) * (2 * armWidth);
     deltay = -Math.sin(degree) * (2 * armWidth);
-    d += " a " + vertexRadius + " " + vertexRadius + " 0 0 0 " + deltax + " " + deltay;
+    d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
     
     // Right-lower extrusion
     deltax = -extrusionx;
@@ -64,7 +64,7 @@ function triangle(base, armWidth, vertexExtrusion, vertexRadius, sideRadius){
     d += " l " + 0 + " " + -vertexExtrusion;
     
     // Top vertex
-    d += " a " + vertexRadius + " " + vertexRadius + " 0 0 0 " + (2 * -armWidth) + " 0";
+    d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + (2 * -armWidth) + " 0";
     
     // Left-upper extrusion
     d += " l " + 0 + " " + vertexExtrusion;
@@ -89,7 +89,14 @@ function saveSVG(){
     mimeType = 'image/svg+xml' || 'text/plain';
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '_' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    filename = 'Triangle_' + date + '.svg';
+	var base = document.getElementsByName('base')[0].value;
+	var armWidth = document.getElementsByName('armWidth')[0].value;
+	var vertexExtrusion = document.getElementsByName('vertexExtrusion')[0].value;
+	var vertexDiameter = document.getElementsByName('vertexDiameter')[0].value;
+	var sideRadius = document.getElementsByName('sideRadius')[0].value;
+    var filename = 'Triangle_' + date + '_Base' + base + '_ArmWidth' + armWidth + 
+		'_VertexExtrusion' + vertexExtrusion + '_VertexDiameter' + vertexDiameter +
+		'_SideRadius' + sideRadius + '.svg';
     link.setAttribute('download', filename);
     link.setAttribute('href', 'data:image/svg+xml; charset=utf-8,' + encodeURIComponent(svg));
     document.body.append(link);
@@ -130,26 +137,26 @@ function clearView(){
 }
 
 // Converts polar coordinates to cartesian coordinates
-function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+function polarToCartesian(centerX, centerY, diameter, angleInDegrees) {
   var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
 
   return {
-    x: centerX + (radius * Math.cos(angleInRadians)),
-    y: centerY + (radius * Math.sin(angleInRadians))
+    x: centerX + (diameter * Math.cos(angleInRadians)),
+    y: centerY + (diameter * Math.sin(angleInRadians))
   };
 }
 
 // Defines a circular arc formatted for an svg path's "d" attribute
-function describeArc(x, y, radius, startAngle, endAngle){
+function describeArc(x, y, diameter, startAngle, endAngle){
 
-    var start = polarToCartesian(x, y, radius, endAngle);
-    var end = polarToCartesian(x, y, radius, startAngle);
+    var start = polarToCartesian(x, y, diameter, endAngle);
+    var end = polarToCartesian(x, y, diameter, startAngle);
 
     var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
 
     var d = [
         "M", start.x, start.y, 
-        "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+        "A", diameter, diameter, 0, largeArcFlag, 0, end.x, end.y
     ].join(" ");
 
     return d;
