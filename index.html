@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 </head>
-<body onload="refresh()" style="margin:0px; padding:0px; height: 100vh; width: 100%">
+<body onresize="refresh()" onload="refresh()" style="margin:0px; padding:0px; height: 100vh; width: 100%">
 	<form style="background-color: #efefef; box-shadow: 0px -5px 25px #777777">
 		<table style="margin: auto; font-family: sans-serif;">
 			<tr>
@@ -15,9 +15,9 @@
 				<th>Side Radius</th>
 			<tr>
 			<tr>
-				<td><input type="number" name="base" onchange="refresh()" onmouseover="this.focus()" value="500"></td>
-				<td><input type="number" name="armWidth" onchange="refresh()" onmouseover="this.focus()" value="50"></td>
-				<td><input type="number" name="vertexExtrusion" onchange="refresh()" onmouseover="this.focus()" value="0"></td>
+				<td><input type="number" name="base" onchange="refresh()" onmouseover="this.focus()" value="500" min="0"></td>
+				<td><input type="number" name="armWidth" onchange="refresh()" onmouseover="this.focus()" value="50" min="0"></td>
+				<td><input type="number" name="vertexExtrusion" onchange="refresh()" onmouseover="this.focus()" value="0" min="0"></td>
 				<td><input type="number" name="vertexDiameter" onchange="refresh()" onmouseover="this.focus()" value="50"></td>
 				<td><input type="number" name="sideRadius" onchange="refresh()" onmouseover="this.focus()" value="500"></td>
 			</tr>
@@ -32,7 +32,7 @@
 				</td>
 				<td style="text-align: center;" colspan="2">
 					<label>Fork: </label>
-					<input type="checkbox" name="fork" style="vertical-align: top; cursor: not-allowed;" disabled>
+					<input type="checkbox" name="fork" style="vertical-align: top;" onclick="refresh();">
 				</td>
 			</tr>
 			<tr>
@@ -42,7 +42,7 @@
 			</tr>
 		</table>
 	</form>
-	<svg id="main" style="width: 100%; height: calc(100% - 101px);">
+	<svg id="main" style="width: 100%; height: calc(100% - 140px);">
 		<path id="1" fill="#000000" stroke="#000000" stroke-width="1" d="M 130 511.051177665153  a 30 30 0 0 0 30.000000000000007 51.96152422706631 l 0 0 a 621 621 0 0 1 440 0 l 0 0 a 30 30 0 0 0 30.000000000000007 -51.96152422706631 l 0 0 a 621 621 0 0 1 -220.00000000000006 -381.051177665153 l 0 0 a 30 30 0 0 0 -60 0 l 0 0 a 621 621 0 0 1 -220.00000000000006 381.051177665153 l 0 0"></path>
 	</svg>
 </body>

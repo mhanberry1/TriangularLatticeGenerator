@@ -22,11 +22,13 @@ function refresh(){
 	var vertexDiameter = parseInt(document.getElementsByName("vertexDiameter")[0].value);
 	var sideRadius = parseInt(document.getElementsByName("sideRadius")[0].value);
 	triangle(base, armWidth, vertexExtrusion, vertexDiameter, sideRadius);
+	center();
 }
 
 // Draws a triangle
 function triangle(base, armWidth, vertexExtrusion, vertexDiameter, sideRadius){
 	// Common variables
+	var fork = document.getElementsByName("fork")[0].checked;
 	var degree = Math.PI / 3;
 	extrusionx = Math.sin(degree) * vertexExtrusion;
 	extrusiony = Math.cos(degree) * vertexExtrusion;
@@ -39,58 +41,166 @@ function triangle(base, armWidth, vertexExtrusion, vertexDiameter, sideRadius){
 	var d = "";
 	clearView();
 	
+	// Left triangle
 	// Bottom-left vertex
 	deltax = Math.cos(degree) * (2 * armWidth);
 	deltay = Math.sin(degree) * (2 * armWidth);
 	d += "M " + startx + " " + starty + " " + " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
-	
 	// Bottom-left extrusion
 	deltax = extrusionx;
 	deltay = -extrusiony;
 	d += " l " + deltax + " " + deltay;
-	
 	// Bottom side-radius
 	d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + arcBase  + " 0";
-	
 	// Bottom-right extrusion
 	deltax = extrusionx;
 	deltay = extrusiony;
 	d += " l " + deltax + " " + deltay;
 	
-	// Bottom-right vertex
-	deltax = Math.cos(degree) * (2 * armWidth);
-	deltay = -Math.sin(degree) * (2 * armWidth);
-	d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
+	// If the triangle is forked, fork it
+	if(fork){
+		// Middle triangle
+		// Left-upper extrusion
+		deltax = extrusionx;
+		deltay = extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Left side-radius
+		deltax = Math.cos(degree) * arcBase;
+		deltay = Math.sin(degree) * arcBase;
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
+		// Left-lower extrusion
+		d += " l " + 0 + " " + vertexExtrusion;
+
+		// Bottom triangle
+		// Left-upper extrusion
+		d += " l " + 0 + " " + vertexExtrusion;
+		// Left side-radius
+		deltax = -Math.cos(degree) * arcBase;
+		deltay = Math.sin(degree) * arcBase;
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
+		//Left-lower extrusion
+		deltax = -extrusionx;
+		deltay = extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Bottom-left vertex
+		deltax = Math.cos(degree) * (2 * armWidth);
+		deltay = Math.sin(degree) * (2 * armWidth);
+		d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
+		// Bottom-left extrusion
+		deltax = extrusionx;
+		deltay = -extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Bottom side-radius
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + arcBase  + " 0";
+		// Bottom-right extrusion
+		deltax = extrusionx;
+		deltay = extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Bottom-right vertex
+		deltax = Math.cos(degree) * (2 * armWidth);
+		deltay = -Math.sin(degree) * (2 * armWidth);
+		d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
+		// Right-lower extrusion
+		deltax = -extrusionx;
+		deltay = -extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Right side-radius
+		deltax = -Math.cos(degree) * arcBase;
+		deltay = -Math.sin(degree) * arcBase;
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
+		// Right-upper extrusion
+		d += " l " + 0 + " " + -vertexExtrusion;
+
+		// Middle triangle
+		// Right-lower extrusion
+		d += " l " + 0 + " " + -vertexExtrusion;
+		// Right side-radius
+		deltax = Math.cos(degree) * arcBase;
+		deltay = -Math.sin(degree) * arcBase;
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
+		// Right-upper extrusion
+		deltax = extrusionx;
+		deltay = -extrusiony;
+		d += " l " + deltax + " " + deltay;
+
+		// Right triangle
+		// Bottom-left extrusion
+		deltax = extrusionx;
+		deltay = -extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Bottom side-radius
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + arcBase  + " 0";
+		// Bottom-right extrusion
+		deltax = extrusionx;
+		deltay = extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Bottom-right vertex
+		deltax = Math.cos(degree) * (2 * armWidth);
+		deltay = -Math.sin(degree) * (2 * armWidth);
+		d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
+		// Right-lower extrusion
+		deltax = -extrusionx;
+		deltay = -extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Right side-radius
+		deltax = -Math.cos(degree) * arcBase;
+		deltay = -Math.sin(degree) * arcBase;
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
+		// Right-upper extrusion
+		d += " l " + 0 + " " + -vertexExtrusion;
+		// Top vertex
+		d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + (2 * -armWidth) + " 0";
+		// Left-upper extrusion
+		d += " l " + 0 + " " + vertexExtrusion;
+		// Left side-radius
+		deltax = -Math.cos(degree) * arcBase;
+		deltay = Math.sin(degree) * arcBase;
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
+		//Left-lower extrusion
+		deltax = -extrusionx;
+		deltay = extrusiony;
+		d += " l " + deltax + " " + deltay;
+		
+		// Middle triangle
+		// Top-right extrusion
+		deltax = -extrusionx;
+		deltay = extrusiony;
+		d += " l " + deltax + " " + deltay;
+		// Top side-radius
+		d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + -arcBase  + " 0";
+		// Top-left extrusion
+		deltax = -extrusionx;
+		deltay = -extrusiony;
+		d += " l " + deltax + " " + deltay;
+	}else{
+		// Bottom-right vertex
+		deltax = Math.cos(degree) * (2 * armWidth);
+		deltay = -Math.sin(degree) * (2 * armWidth);
+		d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + deltax + " " + deltay;
+	}
 	
 	// Right-lower extrusion
 	deltax = -extrusionx;
 	deltay = -extrusiony;
 	d += " l " + deltax + " " + deltay;
-	
 	// Right side-radius
 	deltax = -Math.cos(degree) * arcBase;
 	deltay = -Math.sin(degree) * arcBase;
 	d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
-	
 	// Right-upper extrusion
 	d += " l " + 0 + " " + -vertexExtrusion;
-	
 	// Top vertex
 	d += " a " + vertexDiameter + " " + vertexDiameter + " 0 0 0 " + (2 * -armWidth) + " 0";
-	
 	// Left-upper extrusion
 	d += " l " + 0 + " " + vertexExtrusion;
-	
 	// Left side-radius
 	deltax = -Math.cos(degree) * arcBase;
 	deltay = Math.sin(degree) * arcBase;
 	d += " a " + sideRadius + " " + sideRadius + " 0 0 1 " + deltax  + " " + deltay;
-	
 	//Left-lower extrusion
 	deltax = -extrusionx;
 	deltay = extrusiony;
 	d += " l " + deltax + " " + deltay;
-	
 	createElement(d, 1);
 }
 
@@ -172,4 +282,30 @@ function describeArc(x, y, diameter, startAngle, endAngle){
 	].join(" ");
 
 	return d;
+}
+
+// Centers the SVG path and adjusts its size
+function center(){
+	var triangle = document.getElementById("1");
+	var triDim = triangle.getBoundingClientRect();
+	var svg = document.getElementById("main");
+	var svgDim = svg.getBoundingClientRect();
+	// Adjust esize according to the triangle
+	if(false/*triDim.width > triDim.height*/){
+		// Adjust size
+		var scale = (svgDim.width / triDim.width);
+		triangle.setAttribute("transform", "scale(" + scale + ")");
+		triDim = triangle.getBoundingClientRect();
+		// Adjust position
+		var transform = triangle.getAttribute("transform");
+		triangle.setAttribute("transform", transform + " translate(" + ((1 / scale) * (svgDim.x - triDim.x)) + ", " + ((1 / scale) * ((svgDim.y - triDim.y) + (svgDim.height - triDim.height) / 2)) + ")");
+	}else{
+		// Adjust size
+		var scale = (svgDim.height / triDim.height);
+		triangle.setAttribute("transform", "scale(" + scale + ")");
+		triDim = triangle.getBoundingClientRect();
+		// Adjust position
+		var transform = triangle.getAttribute("transform");
+		triangle.setAttribute("transform", transform + " translate(" + ((1 / scale) * ((svgDim.x - triDim.x) + (svgDim.width - triDim.width) / 2)) + ", " + ((1 / scale) * (svgDim.y - triDim.y)) + ")");
+	}
 }
